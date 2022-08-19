@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-// Helper method for generating unique ids
+// Added a helper to generage unique IDs for the notes
 const uuid = require('./helpers/uuid');
 
 const PORT = 3001;
@@ -22,7 +22,7 @@ app.get('/notes', (req, res) =>
 );
 
 
-// apis
+// Start of the API functions
 app.get('/api/notes', (req, res) => {
     fs.readFile(__dirname + "/db/db.json", 'utf8', function (error, data) {
         if (error) {
@@ -36,13 +36,12 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => { 
     const { title, text } = req.body;
 
-    // read JSON object from file
     fs.readFile(__dirname + "/db/db.json", 'utf-8', (err, data) => {
         if (err) {
             throw err;
         }
 
-        // parse JSON object
+        // This parses the json file to a string
         const notes = JSON.parse(data.toString());
 
         notes.push({
@@ -51,7 +50,7 @@ app.post('/api/notes', (req, res) => {
             text
         });
         
-        // print JSON object
+        // This will log the json object
         console.log(notes);
         
         fs.writeFile(__dirname + "/db/db.json", JSON.stringify(notes), function (error, data) {
@@ -74,7 +73,7 @@ app.delete("/api/notes/:id", function (req, res) {
             throw err;
         }
 
-        // parse JSON object
+        // This will parse the JSON object
         const notes = JSON.parse(data.toString());
 
         const index = notes.findIndex(x => x.id === noteId);
